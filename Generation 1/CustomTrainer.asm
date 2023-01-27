@@ -12,9 +12,9 @@ Bytes:
 91 80 92 50 50 50 50 50 92 8D 8E 91 8B 80 97 50 50 50 50 95 84 8D 94 92 80 94 91 50 50 50 82 87 80
 91 88 99 80 91 83 50 50 81 8B 80 92 93 8E 88 92 84 50 50
 ;Code
-3E C3 E0 46 3E 28 3D 20 FD C9 26 40 33 01 00 00 CD 9B B6 C9 21 8B B6 CD D0 B6 21 59 D0 7E D6 F3 C2
+3E C3 E0 46 3E 28 3D 20 FD C9 26 40 36 01 00 00 CD 9B B6 C9 21 8B B6 CD D0 B6 21 59 D0 7E D6 F3 C2
 81 B6 2E 57 7E 3D CA 81 B6 21 24 B5 11 4A D0 0E 0B CD B5 00 21 2F B5 11 9C D8 01 0F 01 CD B5 00 21
-3F B6 11 EE D9 0E 41 CD B5 00 21 81 B6 11 80 FF 0E 0A 00 CD B5 00 C9
+3F B6 11 EE D9 0E 41 CD B5 00 21 81 B6 11 80 FF 01 0A 00 CD B5 00 C9
 
 Data:
     ;PkMn TRAINER Red (converted to Gen 1)
@@ -395,7 +395,7 @@ Code:
         C9          ret
     NewOAMRoutine:
         26 40       ld h, $40
-        33 01       ld [hl], $01              ;Bankswitch (address 4XXX) SRAM to 1 where the custom program is located.
+        36 01       ld [hl], $01              ;Bankswitch (address 4XXX) SRAM to 1 where the custom program is located.
                                               ;May use stack or free space in RAM for parameters later.
         00          nop                       ;Padding for keeping routine copy simple.
         00          nop
@@ -423,7 +423,7 @@ Code:
     Inject:
         21 24 B5    ld hl, TrainerName
         11 4A D0    ld de, $D04A              ;Opponent's trainer name in RAM.
-        0E 0B        ld c, $0B                  ;Size of name.
+        0E 0B       ld c, $0B                ;Size of name.
         CD B5 00    call CopyData             ;$00B5
         21 2F B5    ld hl, PokemonData
         11 9C D8    ld de, $D89C              ;Opponent's data in RAM.
@@ -431,13 +431,13 @@ Code:
         CD B5 00    call CopyData             ;$00B5
         21 3F B6    ld hl, Nicknames
         11 EE D9    ld de, $D9EE              ;Opponent's pokémon nicknames in RAM.
-        0E 41        ld c, $41                 ;Size of data.
+        0E 41       ld c, $41                ;Size of data.
         CD B5 00    call CopyData             ;$00B5
     ;Restore OAM DMA routine.
     EndProgram:
         21 81 B6    ld hl, OldOAMRoutine
     CopyRoutine:
         11 80 FF    ld de, $FF80
-        0E 0A 00    ld bc, $000A              ;Size of routine.
+        01 0A 00    ld bc, $000A              ;Size of routine.
         CD B5 00    call CopyData             ;$00B5
-        C9          ret
+        C9          ret 
